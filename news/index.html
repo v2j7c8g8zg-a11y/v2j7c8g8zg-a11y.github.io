@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="referrer" content="no-referrer" />
+    <meta name="color-scheme" content="light dark" />
+    <title>뉴스 브리핑</title>
+    <meta name="description" content="회차별 뉴스 브리핑 원문" />
+    <link rel="icon" href="/badge.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="/news.css" />
+  </head>
+  <body>
+    <a class="news-skip" href="#news-main">본문으로 건너뛰기</a>
+    <header class="news-header">
+      <div class="news-bar">
+        <span class="news-brand" aria-hidden="true"><span class="news-brand-mark"></span>뉴스 브리핑</span>
+        <div class="news-picker">
+          <label for="news-issue" class="news-sr">회차</label>
+          <svg class="news-icon news-picker-icon" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><rect x="3" y="4.5" width="14" height="12" rx="2.5"/><path d="M3 8.5h14M7 2.5v3M13 2.5v3"/></svg>
+          <select id="news-issue" disabled></select>
+          <span id="news-issue-short" class="news-picker-short" aria-hidden="true"></span>
+          <svg class="news-icon news-picker-chevron" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="m6 8 4 4 4-4"/></svg>
+        </div>
+        <div class="news-actions">
+          <button id="news-refresh" class="news-icon-btn" type="button" aria-label="새로 고침" title="새로 고침">
+            <svg class="news-icon" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M16.2 10a6.2 6.2 0 1 1-1.8-4.4"/><path d="M16.5 3.2v3.6h-3.6"/></svg>
+          </button>
+          <label class="news-switch" title="원문 그대로 보기">
+            <input id="news-plain-toggle" type="checkbox" role="switch" />
+            <span class="news-switch-track" aria-hidden="true"><span class="news-switch-thumb"></span></span>
+            <span class="news-switch-text">원문<span class="news-switch-long"> 그대로 보기</span></span>
+          </label>
+          <details class="news-settings" id="news-settings">
+            <summary class="news-icon-btn" aria-label="보기 설정" title="보기 설정">
+              <svg class="news-icon" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M2.8 15.5 6.6 5h.8l3.8 10.5M4.2 11.8h5.6"/><path d="M13 9.3a2.6 2.6 0 0 1 4.3 1.9v4.3M17.3 12.6c-2.8-.3-4.6.4-4.6 1.7 0 .9.7 1.4 1.7 1.4 1.4 0 2.9-.9 2.9-2.6"/></svg>
+            </summary>
+            <div class="news-popover" role="group" aria-label="보기 설정">
+              <p class="news-popover-label" id="news-font-label">글자 크기</p>
+              <div class="news-segmented" role="group" aria-labelledby="news-font-label">
+                <button type="button" data-font-step="0" aria-pressed="false"><span class="news-seg-a news-seg-a-sm" aria-hidden="true">가</span>작게</button>
+                <button type="button" data-font-step="1" aria-pressed="true"><span class="news-seg-a" aria-hidden="true">가</span>보통</button>
+                <button type="button" data-font-step="2" aria-pressed="false"><span class="news-seg-a news-seg-a-lg" aria-hidden="true">가</span>크게</button>
+              </div>
+              <p class="news-popover-label" id="news-theme-label">화면</p>
+              <div class="news-segmented" role="group" aria-labelledby="news-theme-label">
+                <button type="button" data-theme-choice="system" aria-pressed="true">시스템</button>
+                <button type="button" data-theme-choice="light" aria-pressed="false">밝게</button>
+                <button type="button" data-theme-choice="dark" aria-pressed="false">어둡게</button>
+              </div>
+              <div class="news-popover-foot">
+                <p class="news-popover-note">이 브라우저에만 저장됩니다.</p>
+                <button type="button" id="news-settings-reset" class="news-text-btn">기본값으로</button>
+              </div>
+            </div>
+          </details>
+        </div>
+      </div>
+      <div class="news-progress" aria-hidden="true"><span id="news-progress-bar"></span></div>
+    </header>
+    <p id="news-latest" class="news-latest" hidden>
+      <span class="news-latest-dot" aria-hidden="true"></span>
+      <span>새 회차가 있습니다: <span id="news-latest-label"></span></span>
+      <button id="news-latest-go" type="button">보기</button>
+    </p>
+    <main id="news-main" class="news-main" tabindex="-1">
+      <div class="news-masthead">
+        <p class="news-kicker">뉴스 브리핑</p>
+        <h1 id="news-title" class="news-title">뉴스 브리핑</h1>
+        <div class="news-editionline">
+          <p id="news-edition" class="news-edition"></p>
+          <div class="news-live">
+            <p id="news-status" class="news-status" role="status" aria-live="polite" data-kind="loading">불러오는 중…</p>
+          </div>
+        </div>
+        <details id="news-info" class="news-disclosure news-info" data-anchor="edition-info" hidden>
+          <summary><span class="news-disclosure-label">회차 정보</span><span id="news-info-hint"></span></summary>
+          <dl id="news-meta" class="news-meta" hidden></dl>
+          <div id="news-rawhead" class="news-rawhead" hidden></div>
+          <p class="news-info-foot"><button type="button" id="news-copy-link" class="news-text-btn">이 회차 링크 복사</button></p>
+        </details>
+        <p id="news-notice" class="news-notice" hidden></p>
+      </div>
+      <nav class="news-toc" aria-label="목차">
+        <button type="button" id="news-toc-toggle" class="news-toc-toggle" aria-expanded="false" aria-controls="news-nav">
+          <span class="news-toc-toggle-label">목차</span>
+          <span id="news-toc-current" class="news-toc-current"></span>
+          <svg class="news-icon news-toc-chevron" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="m6 8 4 4 4-4"/></svg>
+        </button>
+        <p class="news-toc-label" aria-hidden="true">목차</p>
+        <p id="news-toc-note" class="news-toc-note" hidden>원문 보기에서는 원문의 제목 줄로 이동합니다.</p>
+        <div id="news-nav" class="news-nav"></div>
+      </nav>
+      <div id="news-article" class="news-article" tabindex="-1">
+        <noscript><p>이 페이지는 JavaScript로 회차를 불러옵니다. JavaScript를 켜 주세요.</p></noscript>
+      </div>
+      <footer class="news-footer">
+        <p id="news-checked" class="news-checked" hidden></p>
+        <p id="news-poll-note"></p>
+      </footer>
+    </main>
+    <script type="module" src="/news.js"></script>
+  </body>
+</html>
